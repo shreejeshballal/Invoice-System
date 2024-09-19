@@ -35,6 +35,12 @@ namespace SHRBA.Invoicing.Services
 
         public void DeleteProduct(Product product)
         {
+            var invoices = _unitOfWork.LineItems.Find(i => i.ProductId == product.Id);
+            if (invoices.Count() > 0)
+            {
+                throw new Exception("Product are used in invoices. Cannot delete");
+            }
+
             _unitOfWork.Products.Remove(product);
             _unitOfWork.Commit();
         }

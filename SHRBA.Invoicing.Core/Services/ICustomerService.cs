@@ -13,5 +13,7 @@ namespace SHRBA.Invoicing.Core.Services
         public void DeleteCustomer(Customer customer);
 
         public void UpdateCustomer(Customer customer);
+
+
     }
 }

@@ -74,6 +74,10 @@ namespace SHRBA.Invoicing.Client
                      services.AddTransient<ProductEditForm>();
                      services.AddTransient<InvoiceLineItemEditForm>();
                      services.AddTransient<InvoiceEditForm>();
+                     services.AddTransient<CategoryDeleteForm>();
+                     services.AddTransient<CustomerDeleteForm>();
+                     services.AddTransient<ProductDeleteForm>();
+                     services.AddTransient<InvoiceDeleteForm>();
 
                  });
         }

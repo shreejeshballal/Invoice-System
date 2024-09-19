@@ -16,5 +16,7 @@ namespace SHRBA.Invoicing.Core.Services
 
         public void UpdateCategory(Category category);
 
+
+
     }
 }

@@ -28,6 +28,7 @@ namespace SHRBA.Invoicing.Services
         public void DeleteInvoice(Invoice invoice)
         {
             _unitOfWork.Invoices.Remove(invoice);
+            _unitOfWork.LineItems.RemoveRange(invoice.LineItems);
             _unitOfWork.Commit();
         }
 

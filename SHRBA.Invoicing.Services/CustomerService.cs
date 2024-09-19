@@ -15,10 +15,6 @@ namespace SHRBA.Invoicing.Services
 
         public Customer CreateCustomer(Customer customer)
         {
-            if (CustomerExists(customer))
-            {
-                throw new Exception("Customer already exists");
-            }
 
             _unitOfWork.Customers.Add(customer);
             _unitOfWork.Commit();
@@ -33,6 +29,13 @@ namespace SHRBA.Invoicing.Services
 
         public void DeleteCustomer(Customer customer)
         {
+            var invoices = _unitOfWork.Invoices.Find(i => i.CustomerId == customer.Id);
+            if (invoices.Count() > 0)
+            {
+                throw new Exception("Customer has invoices. Cannot delete");
+            }
+
+
             _unitOfWork.Customers.Remove(customer);
             _unitOfWork.Commit();
         }

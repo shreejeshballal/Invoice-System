@@ -122,6 +122,7 @@
             deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
             deleteToolStripMenuItem.Size = new Size(241, 34);
             deleteToolStripMenuItem.Text = "Delete Category";
+            deleteToolStripMenuItem.Click += deleteToolStripMenuItem_Click;
             // 
             // productsToolStripMenuItem
             // 
@@ -133,34 +134,35 @@
             // viewToolStripMenuItem1
             // 
             viewToolStripMenuItem1.Name = "viewToolStripMenuItem1";
-            viewToolStripMenuItem1.Size = new Size(231, 34);
+            viewToolStripMenuItem1.Size = new Size(270, 34);
             viewToolStripMenuItem1.Text = "View Products";
             viewToolStripMenuItem1.Click += viewToolStripMenuItem1_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(228, 6);
+            toolStripSeparator3.Size = new Size(267, 6);
             // 
             // addToolStripMenuItem1
             // 
             addToolStripMenuItem1.Name = "addToolStripMenuItem1";
-            addToolStripMenuItem1.Size = new Size(231, 34);
+            addToolStripMenuItem1.Size = new Size(270, 34);
             addToolStripMenuItem1.Text = "Add Product";
             addToolStripMenuItem1.Click += addToolStripMenuItem1_Click;
             // 
             // editToolStripMenuItem
             // 
             editToolStripMenuItem.Name = "editToolStripMenuItem";
-            editToolStripMenuItem.Size = new Size(231, 34);
+            editToolStripMenuItem.Size = new Size(270, 34);
             editToolStripMenuItem.Text = "Edit Product";
             editToolStripMenuItem.Click += editToolStripMenuItem_Click;
             // 
             // deleteToolStripMenuItem1
             // 
             deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
-            deleteToolStripMenuItem1.Size = new Size(231, 34);
+            deleteToolStripMenuItem1.Size = new Size(270, 34);
             deleteToolStripMenuItem1.Text = "Delete Product";
+            deleteToolStripMenuItem1.Click += deleteToolStripMenuItem1_Click;
             // 
             // customersToolStripMenuItem
             // 
@@ -195,6 +197,7 @@
             deleteToolStripMenuItem2.Name = "deleteToolStripMenuItem2";
             deleteToolStripMenuItem2.Size = new Size(246, 34);
             deleteToolStripMenuItem2.Text = "Delete Customer";
+            deleteToolStripMenuItem2.Click += deleteToolStripMenuItem2_Click;
             // 
             // invoicesToolStripMenuItem
             // 
@@ -241,6 +244,7 @@
             deleteInvoiceToolStripMenuItem.Name = "deleteInvoiceToolStripMenuItem";
             deleteInvoiceToolStripMenuItem.Size = new Size(270, 34);
             deleteInvoiceToolStripMenuItem.Text = "Delete Invoice";
+            deleteInvoiceToolStripMenuItem.Click += deleteInvoiceToolStripMenuItem_Click;
             // 
             // MainForm
             // 

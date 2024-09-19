@@ -218,6 +218,46 @@ namespace SHRBA.Invoicing.WinClient
 
         }
 
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = ShowMyForm<CategoryDeleteForm>() as CategoryDeleteForm;
+            var f = MdiChildren.SingleOrDefault(f => f.Name == "CategoryListForm");
+            if (f is null) return;
+            var ilf = f as CategoryListForm;
+            var selectedCategory = ilf.dgvCategories.SelectedRows[0].DataBoundItem as Category;
+            form.SetCategory(selectedCategory);
+        }
+
+        private void deleteToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            var form = ShowMyForm<CustomerDeleteForm>() as CustomerDeleteForm;
+            var f = MdiChildren.SingleOrDefault(f => f.Name == "CustomerListForm");
+            if (f is null) return;
+            var ilf = f as CustomerListForm;
+            var selectedCustomer = ilf.dvgCustomers.SelectedRows[0].DataBoundItem as Customer;
+            form.SetCustomer(selectedCustomer);
+        }
+
+        private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            var form = ShowMyForm<ProductDeleteForm>() as ProductDeleteForm;
+            var f = MdiChildren.SingleOrDefault(f => f.Name == "ProductListForm");
+            if (f is null) return;
+            var ilf = f as ProductListForm;
+            var selectedProduct = ilf.dgvProducts.SelectedRows[0].DataBoundItem as Product;
+            form.SetProduct(selectedProduct);
+        }
+
+        private void deleteInvoiceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = ShowMyForm<InvoiceDeleteForm>() as InvoiceDeleteForm;
+            var f = MdiChildren.SingleOrDefault(f => f.Name == "InvoiceListForm");
+            if (f is null) return;
+            var ilf = f as InvoiceListForm;
+            var selectedInvoice = ilf.dgvInvoices.SelectedRows[0].DataBoundItem as Invoice;
+            form.SetInvoice(selectedInvoice);
+        }
+
         private Form ShowMyForm<T>()
         {
             var formToShow = Program.ServiceProvider.GetRequiredService<T>() as Form;

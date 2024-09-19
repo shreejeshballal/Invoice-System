@@ -35,6 +35,11 @@ namespace SHRBA.Invoicing.Services
 
         public void DeleteCategory(Category category)
         {
+            var product = _unitOfWork.Products.GetProductsByCategoryId(category.Id);
+            if (product.Count() > 0)
+            {
+                throw new Exception("Category has products, cannot delete");
+            }
             _unitOfWork.Categories.Remove(category);
             _unitOfWork.Commit();
         }
