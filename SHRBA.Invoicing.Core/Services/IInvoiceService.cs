@@ -1,22 +1,24 @@
-﻿using SHRBA.Invoicing.Core.Models;
+﻿using SHRBA.Invoicing.Core.Entities;
+using SHRBA.Invoicing.Core.Models.Invoice;
+using SHRBA.Invoicing.Core.Models.LineItem;
 
 namespace SHRBA.Invoicing.Core.Services
 {
     public interface IInvoiceService
     {
-        public IEnumerable<Invoice> GetAllInvoices();
+        public List<InvoiceSummary> GetAllInvoices();
 
-        public Invoice GetInvoiceById(int id);
+        public InvoiceInfo GetInvoiceById(int id);
 
-        public Invoice CreateInvoice(Invoice newInvoice);
+        public Invoice CreateInvoice(InvoiceCreate newInvoice);
 
-        public void UpdateInvoice(Invoice invoice);
+        public void UpdateInvoice(InvoiceInfo invoiceInfo);
 
-        public void DeleteInvoice(Invoice invoice);
+        public void DeleteInvoice(int invoiceId);
 
         double GetLineItemsTotal(int id);
 
-        public IEnumerable<LineItem> GetLineItems(int id, bool includeProductInfo = false);
+        public List<LineItemSummary> GetLineItems(int id, bool includeProductInfo = false);
 
 
     }

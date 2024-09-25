@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using SHRBA.Invoicing.Core.Models;
+using SHRBA.Invoicing.Core.Models.Category;
 using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.WinClient.Categories
@@ -7,7 +7,7 @@ namespace SHRBA.Invoicing.WinClient.Categories
     public partial class CategoryEditForm : Form
     {
 
-        private Category _category;
+        private CategoryInfo _category;
 
         private ICategoryService _categoryService;
 
@@ -15,7 +15,7 @@ namespace SHRBA.Invoicing.WinClient.Categories
         {
             InitializeComponent();
             this._categoryService = categoryService;
-            _category = new Category();
+
         }
 
 
@@ -24,11 +24,11 @@ namespace SHRBA.Invoicing.WinClient.Categories
 
         }
 
-        public void DisplayCategoryDetails(Category category)
+        public void DisplayCategoryDetails(int categoryId)
         {
-            _category.Id = category.Id;
-            textBox1.Text = category.Name;
-            textBox2.Text = category.Description;
+            _category = _categoryService.GetCategoryById(categoryId);
+            textBox1.Text = _category.Name;
+            textBox2.Text = _category.Description;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

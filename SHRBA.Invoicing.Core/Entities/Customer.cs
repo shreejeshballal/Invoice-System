@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SHRBA.Invoicing.Core.Models
+namespace SHRBA.Invoicing.Core.Entities
 {
     public class Customer
     {

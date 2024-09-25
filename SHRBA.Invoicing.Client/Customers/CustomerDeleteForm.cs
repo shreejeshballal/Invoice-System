@@ -1,17 +1,15 @@
-﻿using SHRBA.Invoicing.Core.Models;
-using SHRBA.Invoicing.Core.Services;
+﻿using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.WinClient.Customers
 {
     public partial class CustomerDeleteForm : Form
     {
         private readonly ICustomerService _customerService;
-        private Customer _customer;
+        private int _customerId;
         public CustomerDeleteForm(ICustomerService customerService)
         {
             InitializeComponent();
             _customerService = customerService;
-
 
         }
 
@@ -25,7 +23,7 @@ namespace SHRBA.Invoicing.WinClient.Customers
         {
             try
             {
-                _customerService.DeleteCustomer(_customer);
+                _customerService.DeleteCustomer(_customerId);
                 var message = "Customer successfully deleted!" + Environment.NewLine + Environment.NewLine + "Close and reopen the customer List form to see the changes";
                 MessageBox.Show(message, "SUCCESS", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -40,9 +38,9 @@ namespace SHRBA.Invoicing.WinClient.Customers
         }
 
 
-        public void SetCustomer(Customer customer)
+        public void SetCustomer(int customerId)
         {
-            _customer = customer;
+            _customerId = customerId;
         }
 
         private void CustomerDeleteForm_Load(object sender, EventArgs e)

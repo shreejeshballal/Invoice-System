@@ -1,7 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SHRBA.Invoicing.Core.Models
+namespace SHRBA.Invoicing.Core.Entities
 {
     public class Category
     {

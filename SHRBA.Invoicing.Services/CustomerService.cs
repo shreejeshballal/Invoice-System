@@ -1,5 +1,7 @@
 ﻿using SHRBA.Invoicing.Core;
-using SHRBA.Invoicing.Core.Models;
+using SHRBA.Invoicing.Core.Entities;
+using SHRBA.Invoicing.Core.Mappers;
+using SHRBA.Invoicing.Core.Models.Customer;
 using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.Services
@@ -13,59 +15,62 @@ namespace SHRBA.Invoicing.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Customer CreateCustomer(Customer customer)
+        public Customer CreateCustomer(CustomerCreate customerCreate)
         {
-
+            var customer = CustomerMapper.ToCustomer(customerCreate);
             _unitOfWork.Customers.Add(customer);
             _unitOfWork.Commit();
             return customer;
         }
 
-        private bool CustomerExists(Customer newCustomer)
+        private bool CustomerExists(CustomerCreate newCustomer)
         {
             var customer = _unitOfWork.Customers.SingleOrDefault(c => (c.Phone.ToLower() == newCustomer.Phone.ToLower() || c.Email.ToLower() == newCustomer.Email.ToLower()));
             return customer != null;
         }
 
-        public void DeleteCustomer(Customer customer)
+        public void DeleteCustomer(int customerId)
         {
-            var invoices = _unitOfWork.Invoices.Find(i => i.CustomerId == customer.Id);
+            var invoices = _unitOfWork.Invoices.Find(i => i.CustomerId == customerId);
             if (invoices.Count() > 0)
             {
                 throw new Exception("Customer has invoices. Cannot delete");
             }
 
-
+            var customer = _unitOfWork.Customers.GetById(customerId);
             _unitOfWork.Customers.Remove(customer);
             _unitOfWork.Commit();
         }
 
-        public Customer GetCustomerById(int id)
+        public CustomerInfo GetCustomerById(int id)
         {
-            return _unitOfWork.Customers.GetById(id);
+            var customer = _unitOfWork.Customers.GetById(id);
+            var customerInfo = CustomerMapper.ToCustomerInfo(customer);
+            return customerInfo;
         }
 
-        public IEnumerable<Customer> GetCustomers()
+        public List<CustomerSummary> GetCustomers()
         {
-            return _unitOfWork.Customers.GetAll();
+            var customers = _unitOfWork.Customers.GetAll();
+            return customers.Select(customer => CustomerMapper.ToCustomerSummary(customer)).ToList();
         }
 
-        public void UpdateCustomer(Customer customer)
+        public void UpdateCustomer(CustomerInfo customerInfo)
         {
-            var existingCustomer = _unitOfWork.Customers.SingleOrDefault(c => (c.Id != customer.Id && (c.Email == customer.Email || c.Phone == customer.Phone)));
+            var existingCustomer = _unitOfWork.Customers.SingleOrDefault(c => (c.Id != customerInfo.Id && (c.Email == customerInfo.Email || c.Phone == customerInfo.Phone)));
 
             if (existingCustomer != null)
             {
                 throw new Exception("Customer already exists");
             }
 
-            var customerToBeUpdated = _unitOfWork.Customers.GetById(customer.Id);
+            var customerToBeUpdated = _unitOfWork.Customers.GetById(customerInfo.Id);
             if (customerToBeUpdated != null)
             {
-                customerToBeUpdated.Name = customer.Name;
-                customerToBeUpdated.Address = customer.Address;
-                customerToBeUpdated.Email = customer.Email;
-                customerToBeUpdated.Phone = customer.Phone;
+                customerToBeUpdated.Name = customerInfo.Name;
+                customerToBeUpdated.Address = customerInfo.Address;
+                customerToBeUpdated.Email = customerInfo.Email;
+                customerToBeUpdated.Phone = customerInfo.Phone;
             }
             _unitOfWork.Commit();
         }

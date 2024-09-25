@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using SHRBA.Invoicing.Core.Models;
+using SHRBA.Invoicing.Core.Models.Product;
 using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.WinClient.Products
@@ -8,7 +8,7 @@ namespace SHRBA.Invoicing.WinClient.Products
     {
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
-        private Product _product;
+        private ProductInfo _product;
         private bool _isLoading = false;
 
         public ProductEditForm(IProductService productService, ICategoryService categoryService)
@@ -16,7 +16,7 @@ namespace SHRBA.Invoicing.WinClient.Products
             InitializeComponent();
             _productService = productService;
             _categoryService = categoryService;
-            _product = new Product();
+
 
         }
 
@@ -29,16 +29,14 @@ namespace SHRBA.Invoicing.WinClient.Products
             _isLoading = false;
         }
 
-        public void DisplayProductDetails(Product product)
+        public void DisplayProductDetails(int productId)
         {
-            _product.Id = product.Id;
-            textBox1.Text = product.Name;
-            textBox2.Text = product.Description;
-            textBox3.Text = product.Quantity.ToString();
-            textBox4.Text = product.Price.ToString();
-            comboBox1.SelectedValue = product.CategoryId;
-
-
+            _product = _productService.GetProductById(productId);
+            textBox1.Text = _product.Name;
+            textBox2.Text = _product.Description;
+            textBox3.Text = _product.Quantity.ToString();
+            textBox4.Text = _product.Price.ToString();
+            comboBox1.SelectedValue = _product.CategoryId;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

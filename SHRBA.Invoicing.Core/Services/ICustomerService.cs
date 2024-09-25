@@ -1,18 +1,19 @@
-﻿using SHRBA.Invoicing.Core.Models;
+﻿using SHRBA.Invoicing.Core.Entities;
+using SHRBA.Invoicing.Core.Models.Customer;
 
 namespace SHRBA.Invoicing.Core.Services
 {
     public interface ICustomerService
     {
-        public IEnumerable<Customer> GetCustomers();
+        public List<CustomerSummary> GetCustomers();
 
-        public Customer GetCustomerById(int id);
+        public CustomerInfo GetCustomerById(int id);
 
-        public Customer CreateCustomer(Customer customer);
+        public Customer CreateCustomer(CustomerCreate customer);
 
-        public void DeleteCustomer(Customer customer);
+        public void DeleteCustomer(int customerId);
 
-        public void UpdateCustomer(Customer customer);
+        public void UpdateCustomer(CustomerInfo customerInfo);
 
 
     }

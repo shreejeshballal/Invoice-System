@@ -1,12 +1,12 @@
 ﻿using System.Text;
-using SHRBA.Invoicing.Core.Models;
+using SHRBA.Invoicing.Core.Models.Category;
 using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.WinClient.Categories
 {
     public partial class CategoryAddForm : Form
     {
-        private Category newCategory;
+        private CategoryCreate newCategory;
         private readonly ICategoryService categoryService;
 
 
@@ -18,7 +18,7 @@ namespace SHRBA.Invoicing.WinClient.Categories
 
         private void CategoryAddForm_Load(object sender, EventArgs e)
         {
-            newCategory = new Category();
+            newCategory = new CategoryCreate();
         }
 
         private void button1_Click(object sender, EventArgs e)

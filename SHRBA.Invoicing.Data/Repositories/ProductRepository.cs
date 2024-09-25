@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SHRBA.Invoicing.Core.Models;
+using SHRBA.Invoicing.Core.Entities;
 using SHRBA.Invoicing.Core.Repositories;
 
 namespace SHRBA.Invoicing.Data.Repositories

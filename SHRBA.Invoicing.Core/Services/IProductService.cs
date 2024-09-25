@@ -1,17 +1,18 @@
-﻿using SHRBA.Invoicing.Core.Models;
+﻿using SHRBA.Invoicing.Core.Entities;
+using SHRBA.Invoicing.Core.Models.Product;
 
 namespace SHRBA.Invoicing.Core.Services
 {
     public interface IProductService
     {
-        public IEnumerable<Product> GetProducts();
+        public List<ProductSummary> GetProducts();
 
-        public Product GetProductById(int id);
+        public ProductInfo GetProductById(int id);
 
-        public Product CreateProduct(Product product);
+        public Product CreateProduct(ProductCreate product);
 
-        public void DeleteProduct(Product product);
+        public void DeleteProduct(int productId);
 
-        public void UpdateProduct(Product product);
+        public void UpdateProduct(ProductInfo product);
     }
 }

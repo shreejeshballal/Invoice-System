@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using SHRBA.Invoicing.Core.Models;
+using SHRBA.Invoicing.Core.Entities;
 
 namespace SHRBA.Invoicing.Data.Configurations
 {

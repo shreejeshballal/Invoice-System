@@ -41,7 +41,6 @@
             dgvCategories.RowHeadersWidth = 62;
             dgvCategories.Size = new Size(800, 450);
             dgvCategories.TabIndex = 0;
-            dgvCategories.CellContentClick += dgvCategories_CellContentClick;
             // 
             // CategoryListForm
             // 
@@ -50,7 +49,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(dgvCategories);
             Name = "CategoryListForm";
-            Text = "CategoryList";
+            Text = "CategoryListForm";
             Load += CategoryListForm_Load;
             ((System.ComponentModel.ISupportInitialize)dgvCategories).EndInit();
             ResumeLayout(false);
@@ -58,6 +57,6 @@
 
         #endregion
 
-        internal DataGridView dgvCategories;
+        public DataGridView dgvCategories;
     }
 }

@@ -202,9 +202,9 @@
             lblGrandTotal.Location = new Point(981, 226);
             lblGrandTotal.Margin = new Padding(4, 0, 4, 0);
             lblGrandTotal.Name = "lblGrandTotal";
-            lblGrandTotal.Size = new Size(52, 25);
+            lblGrandTotal.Size = new Size(22, 25);
             lblGrandTotal.TabIndex = 10;
-            lblGrandTotal.Text = "9999";
+            lblGrandTotal.Text = "0";
             // 
             // lblTax
             // 
@@ -212,9 +212,9 @@
             lblTax.Location = new Point(981, 169);
             lblTax.Margin = new Padding(4, 0, 4, 0);
             lblTax.Name = "lblTax";
-            lblTax.Size = new Size(52, 25);
+            lblTax.Size = new Size(47, 25);
             lblTax.TabIndex = 9;
-            lblTax.Text = "9999";
+            lblTax.Text = "10%";
             // 
             // lblSubTotal
             // 
@@ -222,9 +222,10 @@
             lblSubTotal.Location = new Point(981, 74);
             lblSubTotal.Margin = new Padding(4, 0, 4, 0);
             lblSubTotal.Name = "lblSubTotal";
-            lblSubTotal.Size = new Size(52, 25);
+            lblSubTotal.Size = new Size(22, 25);
             lblSubTotal.TabIndex = 8;
-            lblSubTotal.Text = "9999";
+            lblSubTotal.Text = "0";
+            lblSubTotal.Click += lblSubTotal_Click;
             // 
             // label9
             // 
@@ -265,7 +266,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1261, 776);
+            ClientSize = new Size(1261, 784);
             Controls.Add(dgvLineItems);
             Controls.Add(btnAddLineItem);
             Controls.Add(btnSaveInvoice);

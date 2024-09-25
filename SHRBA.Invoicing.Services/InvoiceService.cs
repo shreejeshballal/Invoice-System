@@ -1,5 +1,8 @@
 ﻿using SHRBA.Invoicing.Core;
-using SHRBA.Invoicing.Core.Models;
+using SHRBA.Invoicing.Core.Entities;
+using SHRBA.Invoicing.Core.Mappers;
+using SHRBA.Invoicing.Core.Models.Invoice;
+using SHRBA.Invoicing.Core.Models.LineItem;
 using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.Services
@@ -15,36 +18,42 @@ namespace SHRBA.Invoicing.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Invoice CreateInvoice(Invoice newInvoice)
+        public Invoice CreateInvoice(InvoiceCreate newInvoice)
         {
-            _unitOfWork.Invoices.Add(newInvoice);
-            _unitOfWork.LineItems.AddRange(newInvoice.LineItems);
-
-
+            var invoice = InvoiceMapper.ToInvoice(newInvoice);
+            _unitOfWork.Invoices.Add(invoice);
             _unitOfWork.Commit();
-            return newInvoice;
+            return invoice;
         }
 
-        public void DeleteInvoice(Invoice invoice)
+        public void DeleteInvoice(int invoiceId)
         {
+            var invoice = _unitOfWork.Invoices.GetById(invoiceId);
+
             _unitOfWork.Invoices.Remove(invoice);
-            _unitOfWork.LineItems.RemoveRange(invoice.LineItems);
             _unitOfWork.Commit();
         }
 
-        public IEnumerable<Invoice> GetAllInvoices()
+        public List<InvoiceSummary> GetAllInvoices()
         {
-            return _unitOfWork.Invoices.GetAll();
+            var invoices = _unitOfWork.Invoices.GetAll();
+            return invoices.Select(invoice => InvoiceMapper.ToInvoiceSummary(invoice)).ToList();
         }
 
-        public Invoice GetInvoiceById(int id)
+        public InvoiceInfo GetInvoiceById(int id)
         {
-            return _unitOfWork.Invoices.GetById(id);
+            var invoice = _unitOfWork.Invoices.GetById(id);
+            var lineItems = _unitOfWork.LineItems.GetInvoiceLineItems(id, true).ToList();
+            invoice.LineItems = lineItems;
+            var invoiceInfo = InvoiceMapper.ToInvoiceInfo(invoice);
+            return invoiceInfo;
         }
 
-        public IEnumerable<LineItem> GetLineItems(int id, bool includeProductInfo = false)
+        public List<LineItemSummary> GetLineItems(int id, bool includeProductInfo = false)
         {
-            return _unitOfWork.LineItems.GetInvoiceLineItems(id, includeProductInfo);
+            var lineItems = _unitOfWork.LineItems.GetInvoiceLineItems(id, includeProductInfo);
+            return lineItems.Select(lineItem => LineItemMapper.ToLineItemSummary(lineItem)).ToList();
+
         }
 
         public double GetLineItemsTotal(int id)
@@ -52,26 +61,25 @@ namespace SHRBA.Invoicing.Services
             return 0;
         }
 
-        public void UpdateInvoice(Invoice invoice)
+        public void UpdateInvoice(InvoiceInfo invoiceInfo)
         {
-            var existingInvoice = _unitOfWork.Invoices.SingleOrDefault(i => (i.Id != invoice.Id && i.InvoiceNumber == invoice.InvoiceNumber));
+            var existingInvoice = _unitOfWork.Invoices.SingleOrDefault(i => (i.Id != invoiceInfo.Id && i.InvoiceNumber == invoiceInfo.InvoiceNumber));
 
             if (existingInvoice != null)
             {
                 throw new Exception("Invoice already exists");
             }
 
-            var invoiceToBeUpdated = _unitOfWork.Invoices.GetById(invoice.Id);
+            var invoiceToBeUpdated = _unitOfWork.Invoices.GetById(invoiceInfo.Id);
             if (invoiceToBeUpdated != null)
             {
-                invoiceToBeUpdated.InvoiceDate = invoice.InvoiceDate;
-                invoiceToBeUpdated.IsDiscountInPercentage = invoice.IsDiscountInPercentage;
-                invoiceToBeUpdated.Discount = invoice.Discount;
-                invoiceToBeUpdated.CustomerId = invoice.CustomerId;
-                invoiceToBeUpdated.PaymentMode = invoice.PaymentMode;
-                invoiceToBeUpdated.Total = invoice.Total;
-                invoiceToBeUpdated.LineItems.Clear();
-                invoiceToBeUpdated.LineItems.AddRange(invoice.LineItems);
+                invoiceToBeUpdated.InvoiceDate = invoiceInfo.InvoiceDate;
+                invoiceToBeUpdated.IsDiscountInPercentage = invoiceInfo.IsDiscountInPercentage;
+                invoiceToBeUpdated.Discount = invoiceInfo.Discount;
+                invoiceToBeUpdated.CustomerId = invoiceInfo.CustomerId;
+                invoiceToBeUpdated.PaymentMode = invoiceInfo.PaymentMode;
+                invoiceToBeUpdated.Total = invoiceInfo.Total;
+                invoiceToBeUpdated.LineItems = invoiceInfo.LineItems.Select(lineItem => LineItemMapper.ToLineItem(lineItem)).ToList();
             }
 
             _unitOfWork.Commit();

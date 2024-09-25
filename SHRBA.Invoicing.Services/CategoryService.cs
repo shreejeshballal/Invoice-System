@@ -1,6 +1,8 @@
 ﻿
 using SHRBA.Invoicing.Core;
-using SHRBA.Invoicing.Core.Models;
+using SHRBA.Invoicing.Core.Entities;
+using SHRBA.Invoicing.Core.Mappers;
+using SHRBA.Invoicing.Core.Models.Category;
 using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.Services
@@ -14,44 +16,51 @@ namespace SHRBA.Invoicing.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Category CreateCategory(Category category)
+        public Category CreateCategory(CategoryCreate category)
         {
             if (CategoryExists(category))
             {
                 throw new Exception("Category already exists");
             }
 
-            _unitOfWork.Categories.Add(category);
+            var categoryEntity = CategoryMapper.ToCategory(category);
+
+            _unitOfWork.Categories.Add(categoryEntity);
             _unitOfWork.Commit();
-            return category;
+            return categoryEntity;
         }
 
 
-        private bool CategoryExists(Category newCategory)
+        private bool CategoryExists(CategoryCreate newCategory)
         {
             var category = _unitOfWork.Categories.SingleOrDefault(c => c.Name.ToLower() == newCategory.Name.ToLower());
             return category != null;
         }
 
-        public void DeleteCategory(Category category)
+        public void DeleteCategory(int categoryId)
         {
-            var product = _unitOfWork.Products.GetProductsByCategoryId(category.Id);
+            var product = _unitOfWork.Products.GetProductsByCategoryId(categoryId);
             if (product.Count() > 0)
             {
                 throw new Exception("Category has products, cannot delete");
             }
+            var category = _unitOfWork.Categories.GetById(categoryId);
             _unitOfWork.Categories.Remove(category);
             _unitOfWork.Commit();
         }
 
-        public IEnumerable<Category> GetCategories()
+        public List<CategorySummary> GetCategories()
         {
-            return _unitOfWork.Categories.GetAll();
+            var categories = _unitOfWork.Categories.GetAll();
+            return categories.Select(category => CategoryMapper.ToCategorySummary(category)).ToList();
+
         }
 
-        public Category GetCategoryById(int id)
+        public CategoryInfo GetCategoryById(int id)
         {
-            return _unitOfWork.Categories.GetById(id);
+            var category = _unitOfWork.Categories.GetById(id);
+            var categoryInfo = CategoryMapper.ToCategoryInfo(category);
+            return categoryInfo;
         }
 
         public Category GetCategoryByProductId(int id)
@@ -59,20 +68,21 @@ namespace SHRBA.Invoicing.Services
             return null;
         }
 
-        public void UpdateCategory(Category category)
+        public void UpdateCategory(CategoryInfo categoryInfo)
         {
-            var existingCategory = _unitOfWork.Categories.SingleOrDefault(c => (c.Id != category.Id && c.Name == category.Name));
+            var existingCategory = _unitOfWork.Categories.SingleOrDefault(c => (c.Id != categoryInfo.Id && c.Name == categoryInfo.Name));
 
             if (existingCategory != null)
             {
                 throw new Exception("Category already exists");
             }
 
-            var categoryToBeUpdated = _unitOfWork.Categories.GetById(category.Id);
+            var categoryToBeUpdated = _unitOfWork.Categories.GetById(categoryInfo.Id);
+
             if (categoryToBeUpdated != null)
             {
-                categoryToBeUpdated.Name = category.Name;
-                categoryToBeUpdated.Description = category.Description;
+                categoryToBeUpdated.Name = categoryInfo.Name;
+                categoryToBeUpdated.Description = categoryInfo.Description;
             }
 
             _unitOfWork.Commit();

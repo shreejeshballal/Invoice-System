@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using SHRBA.Invoicing.Core.Models;
+﻿using SHRBA.Invoicing.Core.Models.Invoice;
 using SHRBA.Invoicing.Core.Services;
-using SHRBA.Invoicing.Services;
 
 namespace SHRBA.Invoicing.WinClient.Invoices
 {
@@ -26,8 +16,9 @@ namespace SHRBA.Invoicing.WinClient.Invoices
             this.customerService = customerService;
         }
 
-        public void DislpayInvoiceDetails(Invoice invoice)
+        public void DislpayInvoiceDetails(InvoiceSummary invoice)
         {
+
             lblCustomer.Text = customerService.GetCustomerById(invoice.CustomerId).Name;
             lblDiscount.Text = invoice.Discount.ToString();
             lblGrandTotal.Text = invoice.Total.ToString();
@@ -38,7 +29,7 @@ namespace SHRBA.Invoicing.WinClient.Invoices
             lblSubTotal.Text = invoiceService.GetLineItemsTotal(invoice.Id).ToString();
             lblTax.Text = "";
 
-            dgvLineItems.DataSource = invoiceService.GetLineItems(invoice.Id,true);
+            dgvLineItems.DataSource = invoiceService.GetLineItems(invoice.Id, true);
 
 
         }

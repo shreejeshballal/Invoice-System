@@ -1,12 +1,12 @@
 ﻿using System.Text;
-using SHRBA.Invoicing.Core.Models;
+using SHRBA.Invoicing.Core.Models.Product;
 using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.WinClient.Products
 {
     public partial class ProductAddForm : Form
     {
-        private Product newProduct;
+        private ProductCreate newProduct;
         private readonly IProductService productService;
         private readonly ICategoryService categoryService;
         private bool IsLoading;
@@ -24,7 +24,7 @@ namespace SHRBA.Invoicing.WinClient.Products
             comboBox1.ValueMember = "Id";
             IsLoading = false;
 
-            newProduct = new Product();
+            newProduct = new ProductCreate();
             newProduct.CategoryId = int.Parse(comboBox1.SelectedValue.ToString());
 
 

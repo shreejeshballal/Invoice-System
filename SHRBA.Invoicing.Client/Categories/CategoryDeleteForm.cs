@@ -1,16 +1,14 @@
-﻿using SHRBA.Invoicing.Core.Models;
-using SHRBA.Invoicing.Core.Services;
+﻿using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.WinClient.Categories
 {
     public partial class CategoryDeleteForm : Form
     {
         private readonly ICategoryService _categoryService;
-        private Category _category;
+        private int _categoryId;
         public CategoryDeleteForm(ICategoryService categoryService)
         {
             InitializeComponent();
-            _category = new Category();
             _categoryService = categoryService;
         }
 
@@ -30,16 +28,16 @@ namespace SHRBA.Invoicing.WinClient.Categories
 
         }
 
-        public void SetCategory(Category category)
+        public void SetCategory(int categoryId)
         {
-            _category = category;
+            _categoryId = categoryId;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             try
             {
-                _categoryService.DeleteCategory(_category);
+                _categoryService.DeleteCategory(_categoryId);
                 var message = "Category successfully deleted!" + Environment.NewLine + Environment.NewLine + "Close and reopen the category List form to see the changes";
                 MessageBox.Show(message, "SUCCESS", MessageBoxButtons.OK, MessageBoxIcon.Information);
 

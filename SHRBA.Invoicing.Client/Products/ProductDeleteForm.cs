@@ -1,5 +1,4 @@
-﻿using SHRBA.Invoicing.Core.Models;
-using SHRBA.Invoicing.Core.Services;
+﻿using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.WinClient.Products
 {
@@ -7,7 +6,7 @@ namespace SHRBA.Invoicing.WinClient.Products
     {
 
         private readonly IProductService _productService;
-        private Product _product;
+        private int _productId;
         public ProductDeleteForm(IProductService productService)
         {
             InitializeComponent();
@@ -26,16 +25,16 @@ namespace SHRBA.Invoicing.WinClient.Products
 
 
 
-        public void SetProduct(Product product)
+        public void SetProduct(int productId)
         {
-            _product = product;
+            _productId = productId;
         }
 
         private void button2_Click_1(object sender, EventArgs e)
         {
             try
             {
-                _productService.DeleteProduct(_product);
+                _productService.DeleteProduct(_productId);
                 var message = "Product successfully deleted!" + Environment.NewLine + Environment.NewLine + "Close and reopen the product List form to see the changes";
                 MessageBox.Show(message, "SUCCESS", MessageBoxButtons.OK, MessageBoxIcon.Information);
 

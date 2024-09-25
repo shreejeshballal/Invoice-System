@@ -1,4 +1,4 @@
-﻿using SHRBA.Invoicing.Core.Models;
+﻿using SHRBA.Invoicing.Core.Entities;
 
 namespace SHRBA.Invoicing.Core.Repositories
 {

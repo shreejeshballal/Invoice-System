@@ -1,4 +1,6 @@
-﻿using SHRBA.Invoicing.Core.Models;
+﻿using SHRBA.Invoicing.Core.Models.Invoice;
+using SHRBA.Invoicing.Core.Models.LineItem;
+using SHRBA.Invoicing.Core.Models.Product;
 using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.WinClient.Invoices
@@ -6,8 +8,8 @@ namespace SHRBA.Invoicing.WinClient.Invoices
     public partial class InvoiceLineItemAddForm : Form
     {
 
-        private LineItem newLineItem;
-        public Invoice NewInvoice { get; set; }
+        private LineItemCreate newLineItem;
+        public InvoiceCreate NewInvoice { get; set; }
         private bool IsLoading;
         private readonly IProductService productService;
 
@@ -25,9 +27,10 @@ namespace SHRBA.Invoicing.WinClient.Invoices
             cmbProduct.ValueMember = "Id";
             IsLoading = false;
 
-            newLineItem = new LineItem();
-            var selectedProduct = (Product)cmbProduct.SelectedItem;
-            newLineItem.Product = selectedProduct;
+            newLineItem = new LineItemCreate();
+            var selectedProduct = (ProductSummary)cmbProduct.SelectedItem;
+            newLineItem.ProductName = selectedProduct.Name;
+            newLineItem.Price = selectedProduct.Price;
             newLineItem.ProductId = selectedProduct.Id;
 
         }
@@ -35,8 +38,9 @@ namespace SHRBA.Invoicing.WinClient.Invoices
         private void cmbProduct_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (IsLoading) return;
-            var selectedProduct = (Product)cmbProduct.SelectedItem;
-            newLineItem.Product = selectedProduct;
+            var selectedProduct = (ProductSummary)cmbProduct.SelectedItem;
+            newLineItem.ProductName = selectedProduct.Name;
+            newLineItem.Price = selectedProduct.Price;
             newLineItem.ProductId = selectedProduct.Id;
         }
 
@@ -64,6 +68,7 @@ namespace SHRBA.Invoicing.WinClient.Invoices
                     throw new Exception("Lineitem already exists");
                 }
 
+                newLineItem.Amount = newLineItem.Quantity * newLineItem.Price;
                 NewInvoice.LineItems.Add(newLineItem);
             }
             catch (Exception ex)

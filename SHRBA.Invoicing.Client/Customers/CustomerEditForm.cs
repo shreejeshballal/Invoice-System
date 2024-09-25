@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
-using SHRBA.Invoicing.Core.Models;
+using SHRBA.Invoicing.Core.Models.Customer;
 using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.WinClient.Customers
@@ -8,23 +8,23 @@ namespace SHRBA.Invoicing.WinClient.Customers
     public partial class CustomerEditForm : Form
     {
 
-        private Customer _customer;
+        private CustomerInfo _customer;
         private readonly ICustomerService _customerService;
 
         public CustomerEditForm(ICustomerService customerService)
         {
             InitializeComponent();
             _customerService = customerService;
-            _customer = new Customer();
+
         }
 
-        public void DisplayCustomerDetails(Customer customer)
+        public void DisplayCustomerDetails(int customerId)
         {
-            _customer.Id = customer.Id;
-            textBox1.Text = customer.Name;
-            textBox2.Text = customer.Address;
-            textBox3.Text = customer.Phone;
-            textBox4.Text = customer.Email;
+            _customer = _customerService.GetCustomerById(customerId);
+            textBox1.Text = _customer.Name;
+            textBox2.Text = _customer.Address;
+            textBox3.Text = _customer.Phone;
+            textBox4.Text = _customer.Email;
         }
 
         private void CustomerEditForm_Load(object sender, EventArgs e)

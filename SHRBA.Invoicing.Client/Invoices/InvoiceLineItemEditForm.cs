@@ -1,4 +1,6 @@
-﻿using SHRBA.Invoicing.Core.Models;
+﻿using SHRBA.Invoicing.Core.Models.Invoice;
+using SHRBA.Invoicing.Core.Models.LineItem;
+using SHRBA.Invoicing.Core.Models.Product;
 using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.WinClient.Invoices
@@ -6,9 +8,9 @@ namespace SHRBA.Invoicing.WinClient.Invoices
     public partial class InvoiceLineItemEditForm : Form
     {
 
-        private LineItem _lineItem;
+        private LineItemInfo _lineItem;
         private bool _isLoading;
-        public Invoice Invoice { get; set; }
+        public InvoiceInfo Invoice { get; set; }
         private readonly IProductService _productService;
 
         public InvoiceLineItemEditForm(IProductService productService)
@@ -26,8 +28,8 @@ namespace SHRBA.Invoicing.WinClient.Invoices
         private void cmbProduct_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_isLoading) return;
-            var selectedProduct = (Product)cmbProduct.SelectedItem;
-            _lineItem.Product = selectedProduct;
+            var selectedProduct = (ProductSummary)cmbProduct.SelectedItem;
+            _lineItem.Price = selectedProduct.Price;
             _lineItem.ProductId = selectedProduct.Id;
         }
 
@@ -54,6 +56,7 @@ namespace SHRBA.Invoicing.WinClient.Invoices
         {
             try
             {
+                _lineItem.Amount = _lineItem.Quantity * _lineItem.Price;
                 var itemExists = Invoice.LineItems.SingleOrDefault(x => x.Id != _lineItem.Id && x.ProductId == _lineItem.ProductId);
                 if (itemExists != null)
                 {
@@ -71,17 +74,14 @@ namespace SHRBA.Invoicing.WinClient.Invoices
             }
         }
 
-        public void DisplayLineItemDetails(LineItem lineItem)
+        public void DisplayLineItemDetails(LineItemInfo lineItem)
         {
-            _lineItem = lineItem.ShallowCopy();
-
+            _lineItem = lineItem;
             _isLoading = true;
             cmbProduct.DataSource = _productService.GetProducts();
             cmbProduct.DisplayMember = "Name";
             cmbProduct.ValueMember = "Id";
             _isLoading = false;
-
-
             cmbProduct.SelectedValue = lineItem.ProductId;
             txtQuantity.Text = lineItem.Quantity.ToString();
         }

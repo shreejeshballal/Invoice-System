@@ -1,7 +1,8 @@
 ﻿using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using SHRBA.Invoicing.Client;
-using SHRBA.Invoicing.Core.Models;
+using SHRBA.Invoicing.Core.Models.Invoice;
+using SHRBA.Invoicing.Core.Models.LineItem;
 using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.WinClient.Invoices
@@ -11,7 +12,7 @@ namespace SHRBA.Invoicing.WinClient.Invoices
         private bool _isLoading;
         private readonly IInvoiceService _invoiceService;
         private readonly ICustomerService _customerService;
-        private Invoice _invoice;
+        private InvoiceInfo _invoice;
 
         public InvoiceEditForm(IInvoiceService invoiceService, ICustomerService customerService)
         {
@@ -24,26 +25,22 @@ namespace SHRBA.Invoicing.WinClient.Invoices
 
 
 
-        public void DisplayInvoiceDetails(Invoice invoice)
+        public void DisplayInvoiceDetails(int invoiceId)
         {
             FillCustomers();
-            _invoice = new Invoice();
-            label6.Text = invoice.InvoiceNumber;
-            dtInvoiceDate.Value = invoice.InvoiceDate;
-            cmbCustomer.SelectedItem = invoice.CustomerId;
-            cmbPaymentMode.Text = invoice.PaymentMode;
-            chkIsPercentage.Checked = invoice.IsDiscountInPercentage;
-            txtDiscountAmount.Text = invoice.Discount.ToString();
-            dgvEditLineItems.DataSource = _invoiceService.GetLineItems(invoice.Id, true);
 
-            _invoice.Id = invoice.Id;
-            _invoice.CustomerId = invoice.CustomerId;
-            _invoice.InvoiceNumber = invoice.InvoiceNumber;
-            _invoice.LineItems = new List<LineItem>();
-            for (int i = 0; i < invoice.LineItems.Count(); i++)
-            {
-                _invoice.LineItems.Add(invoice.LineItems[i].ShallowCopy());
-            }
+            _invoice = _invoiceService.GetInvoiceById(invoiceId);
+
+            label6.Text = _invoice.InvoiceNumber;
+            dtInvoiceDate.Value = _invoice.InvoiceDate;
+            cmbCustomer.SelectedItem = _invoice.CustomerId;
+            cmbPaymentMode.Text = _invoice.PaymentMode;
+            chkIsPercentage.Checked = _invoice.IsDiscountInPercentage;
+            txtDiscountAmount.Text = _invoice.Discount.ToString();
+            dgvEditLineItems.DataSource = _invoice.LineItems;
+
+
+
 
         }
 
@@ -158,7 +155,7 @@ namespace SHRBA.Invoicing.WinClient.Invoices
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var form = Program.ServiceProvider.GetRequiredService<InvoiceLineItemAddForm>();
+            var form = Program.ServiceProvider.GetRequiredService<InvoiceListItemEditAddForm>();
             form.NewInvoice = _invoice;
             if (form.ShowDialog() == DialogResult.Cancel) return;
 
@@ -180,7 +177,7 @@ namespace SHRBA.Invoicing.WinClient.Invoices
         {
             var form = Program.ServiceProvider.GetRequiredService<InvoiceLineItemEditForm>();
 
-            var selectedLineItem = dgvEditLineItems.SelectedRows[0].DataBoundItem as LineItem;
+            var selectedLineItem = dgvEditLineItems.SelectedRows[0].DataBoundItem as LineItemInfo;
             form.Invoice = _invoice;
             form.DisplayLineItemDetails(selectedLineItem);
 
@@ -194,7 +191,7 @@ namespace SHRBA.Invoicing.WinClient.Invoices
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            var selectedLineItem = dgvEditLineItems.SelectedRows[0].DataBoundItem as LineItem;
+            var selectedLineItem = dgvEditLineItems.SelectedRows[0].DataBoundItem as LineItemInfo;
             _invoice.LineItems.Remove(selectedLineItem);
             FillLineItems();
         }

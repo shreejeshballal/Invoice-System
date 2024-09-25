@@ -1,7 +1,8 @@
 ﻿using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using SHRBA.Invoicing.Client;
-using SHRBA.Invoicing.Core.Models;
+using SHRBA.Invoicing.Core.Entities;
+using SHRBA.Invoicing.Core.Models.Invoice;
 using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.WinClient.Invoices
@@ -9,27 +10,23 @@ namespace SHRBA.Invoicing.WinClient.Invoices
 
     public partial class InvoiceAddForm : Form
     {
-        private Invoice newInvoice;
-        //private readonly IUnitOfWork unitOfWork;
+        private InvoiceCreate newInvoice;
+
         private readonly IInvoiceService invoiceService;
         private readonly ICustomerService customerService;
         private bool IsLoading;
 
         public InvoiceAddForm(IInvoiceService invoiceService, ICustomerService customerService)
         {
-
-
             InitializeComponent();
-            //this.unitOfWork = unitOfWork;
+
             this.invoiceService = invoiceService;
             this.customerService = customerService;
         }
 
-
-
         private void InvoiceAddForm_Load(object sender, EventArgs e)
         {
-            newInvoice = new Invoice();
+            newInvoice = new InvoiceCreate();
             FillCustomers();
 
             newInvoice.InvoiceDate = dtInvoiceDate.Value;
@@ -54,13 +51,19 @@ namespace SHRBA.Invoicing.WinClient.Invoices
             if (form.ShowDialog() == DialogResult.Cancel) return;
 
             FillLineItems();
+
         }
+
+
+
+
         private void FillLineItems()
         {
             dgvLineItems.DataSource = null;
             dgvLineItems.DataSource = newInvoice.LineItems;
 
         }
+
         private void txtInvoiceNumber_TextChanged(object sender, EventArgs e)
         {
             newInvoice.InvoiceNumber = txtInvoiceNumber.Text.Trim();
@@ -151,6 +154,11 @@ namespace SHRBA.Invoicing.WinClient.Invoices
         }
 
         private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblSubTotal_Click(object sender, EventArgs e)
         {
 
         }

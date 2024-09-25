@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SHRBA.Invoicing.Client;
-using SHRBA.Invoicing.Core.Models;
+using SHRBA.Invoicing.Core.Models.Category;
+using SHRBA.Invoicing.Core.Models.Customer;
+using SHRBA.Invoicing.Core.Models.Invoice;
+using SHRBA.Invoicing.Core.Models.Product;
 using SHRBA.Invoicing.WinClient.Categories;
 using SHRBA.Invoicing.WinClient.Customers;
 using SHRBA.Invoicing.WinClient.Invoices;
@@ -146,7 +149,7 @@ namespace SHRBA.Invoicing.WinClient
             var f = MdiChildren.SingleOrDefault(f => f.Name == "InvoiceListForm");
             if (f is null) return;
             var ilf = f as InvoiceListForm;
-            var selectedInvoice = ilf.dgvInvoices.SelectedRows[0].DataBoundItem as Invoice;
+            var selectedInvoice = ilf.dgvInvoices.SelectedRows[0].DataBoundItem as InvoiceSummary;
             form.DislpayInvoiceDetails(selectedInvoice);
         }
 
@@ -174,8 +177,8 @@ namespace SHRBA.Invoicing.WinClient
             var f = MdiChildren.SingleOrDefault(f => f.Name == "CategoryListForm");
             if (f is null) return;
             var ilf = f as CategoryListForm;
-            var selectedCategory = ilf.dgvCategories.SelectedRows[0].DataBoundItem as Category;
-            form.DisplayCategoryDetails(selectedCategory);
+            var selectedCategory = ilf.dgvCategories.SelectedRows[0].DataBoundItem as CategorySummary;
+            form.DisplayCategoryDetails(selectedCategory.Id);
         }
 
         private void categoriesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -189,8 +192,8 @@ namespace SHRBA.Invoicing.WinClient
             var f = MdiChildren.SingleOrDefault(f => f.Name == "CustomerListForm");
             if (f is null) return;
             var ilf = f as CustomerListForm;
-            var selectedCustomer = ilf.dvgCustomers.SelectedRows[0].DataBoundItem as Customer;
-            form.DisplayCustomerDetails(selectedCustomer);
+            var selectedCustomer = ilf.dvgCustomers.SelectedRows[0].DataBoundItem as CustomerSummary;
+            form.DisplayCustomerDetails(selectedCustomer.Id);
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
@@ -199,8 +202,8 @@ namespace SHRBA.Invoicing.WinClient
             var f = MdiChildren.SingleOrDefault(f => f.Name == "ProductListForm");
             if (f is null) return;
             var ilf = f as ProductListForm;
-            var selectedProduct = ilf.dgvProducts.SelectedRows[0].DataBoundItem as Product;
-            form.DisplayProductDetails(selectedProduct);
+            var selectedProduct = ilf.dgvProducts.SelectedRows[0].DataBoundItem as ProductSummary;
+            form.DisplayProductDetails(selectedProduct.Id);
         }
 
         private void editInvoiceToolStripMenuItem_Click(object sender, EventArgs e)
@@ -209,8 +212,8 @@ namespace SHRBA.Invoicing.WinClient
             var f = MdiChildren.SingleOrDefault(f => f.Name == "InvoiceListForm");
             if (f is null) return;
             var ilf = f as InvoiceListForm;
-            var selectedInvoice = ilf.dgvInvoices.SelectedRows[0].DataBoundItem as Invoice;
-            form.DisplayInvoiceDetails(selectedInvoice);
+            var selectedInvoice = ilf.dgvInvoices.SelectedRows[0].DataBoundItem as InvoiceSummary;
+            form.DisplayInvoiceDetails(selectedInvoice.Id);
         }
 
         private void editLineItemToolStripMenuItem_Click(object sender, EventArgs e)
@@ -224,8 +227,8 @@ namespace SHRBA.Invoicing.WinClient
             var f = MdiChildren.SingleOrDefault(f => f.Name == "CategoryListForm");
             if (f is null) return;
             var ilf = f as CategoryListForm;
-            var selectedCategory = ilf.dgvCategories.SelectedRows[0].DataBoundItem as Category;
-            form.SetCategory(selectedCategory);
+            var selectedCategory = ilf.dgvCategories.SelectedRows[0].DataBoundItem as CategorySummary;
+            form.SetCategory(selectedCategory.Id);
         }
 
         private void deleteToolStripMenuItem2_Click(object sender, EventArgs e)
@@ -234,8 +237,8 @@ namespace SHRBA.Invoicing.WinClient
             var f = MdiChildren.SingleOrDefault(f => f.Name == "CustomerListForm");
             if (f is null) return;
             var ilf = f as CustomerListForm;
-            var selectedCustomer = ilf.dvgCustomers.SelectedRows[0].DataBoundItem as Customer;
-            form.SetCustomer(selectedCustomer);
+            var selectedCustomer = ilf.dvgCustomers.SelectedRows[0].DataBoundItem as CustomerSummary;
+            form.SetCustomer(selectedCustomer.Id);
         }
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -244,8 +247,8 @@ namespace SHRBA.Invoicing.WinClient
             var f = MdiChildren.SingleOrDefault(f => f.Name == "ProductListForm");
             if (f is null) return;
             var ilf = f as ProductListForm;
-            var selectedProduct = ilf.dgvProducts.SelectedRows[0].DataBoundItem as Product;
-            form.SetProduct(selectedProduct);
+            var selectedProduct = ilf.dgvProducts.SelectedRows[0].DataBoundItem as ProductSummary;
+            form.SetProduct(selectedProduct.Id);
         }
 
         private void deleteInvoiceToolStripMenuItem_Click(object sender, EventArgs e)
@@ -254,8 +257,8 @@ namespace SHRBA.Invoicing.WinClient
             var f = MdiChildren.SingleOrDefault(f => f.Name == "InvoiceListForm");
             if (f is null) return;
             var ilf = f as InvoiceListForm;
-            var selectedInvoice = ilf.dgvInvoices.SelectedRows[0].DataBoundItem as Invoice;
-            form.SetInvoice(selectedInvoice);
+            var selectedInvoice = ilf.dgvInvoices.SelectedRows[0].DataBoundItem as InvoiceSummary;
+            form.SetInvoice(selectedInvoice.Id);
         }
 
         private Form ShowMyForm<T>()

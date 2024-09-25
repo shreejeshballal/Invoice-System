@@ -1,12 +1,11 @@
-﻿using SHRBA.Invoicing.Core.Models;
-using SHRBA.Invoicing.Core.Services;
+﻿using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.WinClient.Invoices
 {
     public partial class InvoiceDeleteForm : Form
     {
         private readonly IInvoiceService _invoiceService;
-        private Invoice _invoice;
+        private int _invoiceId;
 
         public InvoiceDeleteForm(IInvoiceService invoiceService)
         {
@@ -29,7 +28,7 @@ namespace SHRBA.Invoicing.WinClient.Invoices
         {
             try
             {
-                _invoiceService.DeleteInvoice(_invoice);
+                _invoiceService.DeleteInvoice(_invoiceId);
                 var message = "Invoice successfully deleted!" + Environment.NewLine + Environment.NewLine + "Close and reopen the Invoice List form to see the changes";
                 MessageBox.Show(message, "SUCCESS", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -44,9 +43,9 @@ namespace SHRBA.Invoicing.WinClient.Invoices
 
         }
 
-        public void SetInvoice(Invoice invoice)
+        public void SetInvoice(int invoiceId)
         {
-            _invoice = invoice;
+            _invoiceId = invoiceId;
         }
     }
 }

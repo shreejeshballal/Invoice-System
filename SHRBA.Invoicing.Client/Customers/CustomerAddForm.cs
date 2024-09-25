@@ -1,13 +1,13 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
-using SHRBA.Invoicing.Core.Models;
+using SHRBA.Invoicing.Core.Models.Customer;
 using SHRBA.Invoicing.Core.Services;
 
 namespace SHRBA.Invoicing.WinClient.Customers
 {
     public partial class CustomerAddForm : Form
     {
-        private Customer newCustomer;
+        private CustomerCreate newCustomer;
         private readonly ICustomerService customerService;
         public CustomerAddForm(ICustomerService customerService)
         {
@@ -66,7 +66,8 @@ namespace SHRBA.Invoicing.WinClient.Customers
 
         private void CustomerAddForm_Load(object sender, EventArgs e)
         {
-            newCustomer = new Customer();
+
+            newCustomer = new CustomerCreate();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

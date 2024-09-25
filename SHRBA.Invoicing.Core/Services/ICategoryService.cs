@@ -1,20 +1,21 @@
-﻿using SHRBA.Invoicing.Core.Models;
+﻿using SHRBA.Invoicing.Core.Entities;
+using SHRBA.Invoicing.Core.Models.Category;
 
 namespace SHRBA.Invoicing.Core.Services
 {
     public interface ICategoryService
     {
-        public IEnumerable<Category> GetCategories();
+        public List<CategorySummary> GetCategories();
 
-        public Category GetCategoryById(int id);
+        public CategoryInfo GetCategoryById(int id);
 
         public Category GetCategoryByProductId(int id);
 
-        public Category CreateCategory(Category category);
+        public Category CreateCategory(CategoryCreate category);
 
-        public void DeleteCategory(Category category);
+        public void DeleteCategory(int categoryId);
 
-        public void UpdateCategory(Category category);
+        public void UpdateCategory(CategoryInfo category);
 
 
 
