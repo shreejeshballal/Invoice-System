@@ -18,7 +18,7 @@ namespace SHRBA.Invoicing.Data.Repositories
 
         IEnumerable<Product> IProductRepository.GetProductsByCategoryId(int categoryId)
         {
-           return InvoicingDbContext.Products.Where(p => p.CategoryId == categoryId).ToList();
+            return InvoicingDbContext.Products.Where(p => p.CategoryId == categoryId).ToList();
         }
     }
 }

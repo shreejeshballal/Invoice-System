@@ -2,9 +2,9 @@
 
 namespace SHRBA.Invoicing.Core
 {
-    public interface IUnitOfWork:IDisposable
+    public interface IUnitOfWork : IDisposable
     {
-        public  ICategoryRepository Categories { get;  }
+        public ICategoryRepository Categories { get; }
         public IProductRepository Products { get; }
 
         public ICustomerRepository Customers { get; }

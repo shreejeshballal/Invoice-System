@@ -19,18 +19,13 @@ namespace SHRBA.Invoicing.WinClient.Invoices
             InitializeComponent();
             _invoiceService = invoiceService;
             _customerService = customerService;
-
         }
-
-
-
 
         public void DisplayInvoiceDetails(int invoiceId)
         {
             FillCustomers();
 
             _invoice = _invoiceService.GetInvoiceById(invoiceId);
-
             label6.Text = _invoice.InvoiceNumber;
             dtInvoiceDate.Value = _invoice.InvoiceDate;
             cmbCustomer.SelectedItem = _invoice.CustomerId;
@@ -38,9 +33,6 @@ namespace SHRBA.Invoicing.WinClient.Invoices
             chkIsPercentage.Checked = _invoice.IsDiscountInPercentage;
             txtDiscountAmount.Text = _invoice.Discount.ToString();
             dgvEditLineItems.DataSource = _invoice.LineItems;
-
-
-
 
         }
 
@@ -60,7 +52,6 @@ namespace SHRBA.Invoicing.WinClient.Invoices
             }
             catch (Exception ex)
             {
-
                 var errMessage = "Could not save Inovice due to: " + Environment.NewLine;
                 errMessage += ex.Message + Environment.NewLine + ex.InnerException?.Message;
                 MessageBox.Show(errMessage, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -180,8 +171,6 @@ namespace SHRBA.Invoicing.WinClient.Invoices
             var selectedLineItem = dgvEditLineItems.SelectedRows[0].DataBoundItem as LineItemInfo;
             form.Invoice = _invoice;
             form.DisplayLineItemDetails(selectedLineItem);
-
-
 
             if (form.ShowDialog() == DialogResult.Cancel) return;
 
